@@ -62,7 +62,8 @@ void ApplicationFreeGLUT::s_OnMotion (int x, int y)
 
 void ApplicationFreeGLUT::s_MouseWheel (int wheel, int direction, int x, int y)
 {
-    RenderingManager::Instance()->MouseWheel(wheel, direction, x, y);
+  // NEW: mouse wheel scrolling!  
+  RenderingManager::Instance()->MouseWheel(wheel, direction, x, y);
   // ImGui callback
   ImGui_ImplGLUT_MouseWheelFunc(wheel, direction, x, y);
 }

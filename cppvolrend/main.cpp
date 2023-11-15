@@ -25,6 +25,7 @@
 #include "structured/rc1pdosct/dosrcrenderer.h"
 #include "structured/rc1pextbsd/ebsrenderer.h"
 #include "structured/rc1pvctsg/vctrenderer.h"
+#include "structured/rc1piso/rc1pisorenderer.h"
 // Slice based
 #include "structured/sbtmdos/sbtmdosrenderer.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -57,6 +58,7 @@ int main (int argc, char **argv)
   //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
   // 1-pass - Ray Casting - GLSL
   RenderingManager::Instance()->AddVolumeRenderer(new RayCasting1Pass());
+  RenderingManager::Instance()->AddVolumeRenderer(new RayCasting1PassIso());
   RenderingManager::Instance()->AddVolumeRenderer(new RC1PConeLightGroundTruthSteps());
   RenderingManager::Instance()->AddVolumeRenderer(new RC1PConeTracingDirOcclusionShading());
   RenderingManager::Instance()->AddVolumeRenderer(new RC1PExtinctionBasedShading());

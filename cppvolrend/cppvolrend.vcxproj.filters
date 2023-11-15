@@ -22,6 +22,9 @@
     <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pass\rc1prenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1piso\rc1pisorenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pcrtgt\crtgtrenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -100,6 +103,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pass\rc1prenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1piso\rc1pisorenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pcrtgt\crtgtrenderer.h">
