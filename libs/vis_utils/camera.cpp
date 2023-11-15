@@ -171,7 +171,7 @@ namespace vis
       changing_radius = false;
       m_changing_camera = false;
     }
-
+    
     return 0;
   }
 
@@ -234,6 +234,16 @@ namespace vis
     }
 
     return 0;
+  }
+
+  // NEW: mousewheel zooming! :)
+  int Camera::MouseWheel(int wheel, int direction, int x, int y) {
+      float move = 10.0f * (float)direction;
+      radius = glm::clamp(radius + move, min_radius, max_radius);
+      glm::vec3 c_e = glm::normalize(glm::vec3(c_data.eye - c_data.center));
+      c_data.eye = c_e * radius;
+      m_changing_camera = true;
+      return 1;
   }
 
   float Camera::GetSpeedKeyboardMovement ()

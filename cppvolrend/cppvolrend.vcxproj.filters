@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\app_freeglut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\app_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\renderingmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\volrenderbase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\volrendernull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pass\rc1prenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pcrtgt\crtgtrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\conegaussiansampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\dosrcrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\extcoefvolumegenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pextbsd\ebsrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pvctsg\preprocessingstages.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pvctsg\vctrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\sbtmdos\sbtmdosrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\sbtmdos\layeredframebufferobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\utils\preillumination.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\utils\parameterspace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_glut.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_opengl2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\app_freeglut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\app_glfw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\renderingmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\volrenderbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\volrendernull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pass\rc1prenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pcrtgt\crtgtrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\conegaussiansampler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\dosrcrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\extcoefvolumegenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pextbsd\ebsrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pvctsg\preprocessingstages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pvctsg\vctrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\sbtmdos\sbtmdosrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\sbtmdos\layeredframebufferobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\utils\preillumination.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\utils\parameterspace.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_glut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_opengl2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_glfw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\external\imgui\examples\imgui_impl_opengl3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\dev\source\cpp_volume_rendering\cppvolrend\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{F37A6D3E-DFBD-39FF-8C90-675A3CDB990D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{2F30CB09-9C78-39B3-9CDA-9FBB1A811DF7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

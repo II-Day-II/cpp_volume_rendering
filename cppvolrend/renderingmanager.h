@@ -60,6 +60,7 @@ public:
   void KeyboardUp (unsigned char key, int x, int y);
   void MouseButton (int bt, int st, int x, int y);
   void MouseMotion (int x, int y);
+  void MouseWheel(int wheel, int direction, int x, int y);
   void CloseFunc ();
   void IdleFunc ();
   void PostRedisplay ();

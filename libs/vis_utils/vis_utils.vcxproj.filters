@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\defines.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\colorutils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\renderoutputframe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\summedareatable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\kernelbase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\box.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\box_rgba.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\bspline3.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\bspline3_rgba.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\catmullrom.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\catmullrom_rgba.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\hat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\hat_rgba.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\mitchellnetravali.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\mitchellnetravali_rgba.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\omoms3.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\omoms3_rgba.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\filters\utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\colorutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\renderoutputframe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\summedareatable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\dev\source\cpp_volume_rendering\libs\vis_utils\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{F37A6D3E-DFBD-39FF-8C90-675A3CDB990D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{2F30CB09-9C78-39B3-9CDA-9FBB1A811DF7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
