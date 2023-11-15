@@ -104,6 +104,7 @@ namespace vis
     bool KeyboardUp (unsigned char key, int x, int y);
     int MouseButton (int bt, int st, int x, int y);
     int MouseMotion (int x, int y);
+    int MouseWheel(int wheel, int direction, int x, int y);
 
     float GetSpeedKeyboardMovement ();
     void SetSpeedKeyboardMovement (float sskm);

@@ -369,6 +369,13 @@ void RenderingManager::MouseMotion (int x, int y)
   PostRedisplay();
 }
 
+void RenderingManager::MouseWheel(int wheel, int direction, int x, int y)
+{
+    if (curr_rdr_parameters.GetCamera()->MouseWheel(wheel, direction, x, y) == 1) {
+        curr_vol_renderer->SetOutdated();
+    }
+}
+
 void RenderingManager::CloseFunc ()
 {
   gl::PipelineShader::Unbind();
