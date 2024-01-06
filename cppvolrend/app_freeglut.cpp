@@ -110,6 +110,7 @@ bool ApplicationFreeGLUT::Init (int argc, char** argv)
 #ifdef __FREEGLUT_EXT_H__
   glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 #endif
+
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL | GLUT_ALPHA);
 
   glutInitWindowSize(RenderingManager::Instance()->GetScreenWidth(),
@@ -122,6 +123,7 @@ bool ApplicationFreeGLUT::Init (int argc, char** argv)
     exit(EXIT_FAILURE);
   }
   printf("Running OpenGL %s\n\n", glGetString(GL_VERSION));
+
 
   // Setup GLUT display function
   glutDisplayFunc(ApplicationFreeGLUT::Display);

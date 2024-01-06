@@ -19,7 +19,7 @@
 // -> DEFINED IN CMAKE
 //----------------------------------------------------------------------
 // must link "x64/glfw/[release|debug]/glfw3.lib"
-//#define USING_GLFW 
+//#define USING_GLFW
 // --> COMMENT USING_FREEGLUT TO USE GLFW
 // http://freeglut.sourceforge.net/
 #define USING_FREEGLUT
@@ -34,6 +34,8 @@
 
 #ifdef USING_GLFW
 //#define USING_VULKAN
+#define NOMINMAX
+#undef USING_FREEGLUT
 #endif
 
 #ifdef USING_VULKAN

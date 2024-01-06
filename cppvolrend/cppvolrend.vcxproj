@@ -337,6 +337,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pass\rc1prenderer.h" />
     <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1piso\rc1pisorenderer.cpp" />
     <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1piso\rc1pisorenderer.h" />
+    <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1padaptive\rc1padaptiverenderer.cpp" />
+    <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1padaptive\rc1padaptiverenderer.h" />
     <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pcrtgt\crtgtrenderer.cpp" />
     <ClInclude Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pcrtgt\crtgtrenderer.h" />
     <ClCompile Include="E:\dev\source\cpp_volume_rendering\cppvolrend\structured\rc1pdosct\conegaussiansampler.cpp" />

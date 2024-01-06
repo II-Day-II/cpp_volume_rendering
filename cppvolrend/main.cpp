@@ -26,6 +26,7 @@
 #include "structured/rc1pextbsd/ebsrenderer.h"
 #include "structured/rc1pvctsg/vctrenderer.h"
 #include "structured/rc1piso/rc1pisorenderer.h"
+#include "structured/rc1padaptive/rc1padaptiverenderer.h"
 // Slice based
 #include "structured/sbtmdos/sbtmdosrenderer.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,6 +64,7 @@ int main (int argc, char **argv)
   RenderingManager::Instance()->AddVolumeRenderer(new RC1PConeTracingDirOcclusionShading());
   RenderingManager::Instance()->AddVolumeRenderer(new RC1PExtinctionBasedShading());
   RenderingManager::Instance()->AddVolumeRenderer(new RC1PVoxelConeTracingSGPU());
+  RenderingManager::Instance()->AddVolumeRenderer(new RayCastingAdaptiveIso());
   //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
   // Slice based
   RenderingManager::Instance()->AddVolumeRenderer(new SBTMDirectionalOcclusionShading());

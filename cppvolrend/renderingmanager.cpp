@@ -48,9 +48,9 @@
 double GetCurrentRenderTime()
 {
 #ifdef USING_FREEGLUT
-  return glutGet(GLUT_ELAPSED_TIME);
-#elif USING_GLFW
-  return glfwGetTime();
+    return glutGet(GLUT_ELAPSED_TIME);
+#elif defined(USING_GLFW)
+    return glfwGetTime();
 #endif
 }
 
