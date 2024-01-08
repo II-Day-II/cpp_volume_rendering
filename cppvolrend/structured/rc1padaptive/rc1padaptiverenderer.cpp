@@ -20,6 +20,7 @@ RayCastingAdaptiveIso::RayCastingAdaptiveIso()
     , m_interval(1)
     , m_temp_texture(nullptr) // bruh
     , m_debug_temp_texture(false)
+    , m_max_pixel_difference(0.0f)
 {
 }
 
@@ -204,7 +205,7 @@ bool RayCastingAdaptiveIso::Update(vis::Camera* camera)
   // Adaptive settings
   cp_shader_rendering->SetUniform("DoInterpolation", m_do_interpolation);
   cp_shader_rendering->SetUniform("interval", m_interval);
-
+  cp_shader_rendering->SetUniform("maxPixelDifference", m_max_pixel_difference);
 
   cp_shader_rendering->SetUniform("ApplyGradientPhongShading", (m_apply_gradient_shading && m_ext_data_manager->GetCurrentGradientTexture()) ? 1 : 0);
   cp_shader_rendering->BindUniform("ApplyGradientPhongShading");
@@ -324,6 +325,8 @@ void RayCastingAdaptiveIso::SetImGuiComponents()
       SetOutdated();
   }
 
+  ImGui::Separator();
+
   ImGui::Text("Do interpolation: ");
   if (ImGui::Checkbox("###RayCastingAdaptiveIsoUIDoInterpolation", &m_do_interpolation))
   {
@@ -342,6 +345,15 @@ void RayCastingAdaptiveIso::SetImGuiComponents()
       m_interval = std::max(std::min(m_interval, 16), 1);
       SetOutdated();
   }
+
+  ImGui::Text("Maximum pixel difference: ");
+  if (ImGui::DragFloat("###RayCastingAdaptiveIsoUIMaxPixelDiff", &m_max_pixel_difference, 0.01f, 0.0f, 0.75f, "%.2f"))
+  {
+      m_max_pixel_difference = std::max(std::min(m_max_pixel_difference, 0.75f), 0.0f);
+      SetOutdated();
+  }
+
+  ImGui::Separator();
   
   if (ImGui::ColorEdit4("Color", &m_u_color[0]))
   {

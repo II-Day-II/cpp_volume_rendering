@@ -45,6 +45,7 @@ uniform bool DoInterpolation;
 uniform sampler2D tempTexture;
 uniform bool IsFirstPass;
 uniform int interval;
+uniform float maxPixelDifference;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // From structured/_common_shaders/ray_bbox_intersection.comp
@@ -94,8 +95,18 @@ vec3 ShadeBlinnPhong (vec3 Tpos, vec3 clr)
   return clr;
 }
 
-void EvalPixel(float tnear, float tfar, Ray r, ivec2 storePos)
+struct RaycastRequirements {
+    float tnear;
+    float tfar;
+    Ray r;
+};
+
+
+void EvalPixel(RaycastRequirements raycastInfo, ivec2 storePos)
 {
+      float tnear = raycastInfo.tnear;
+      float tfar = raycastInfo.tfar;
+      Ray r = raycastInfo.r;
       // Distance to be evaluated
       float D = abs(tfar - tnear);
 
@@ -165,6 +176,148 @@ bool IsDone(vec2 pos)
         && mod(floor(pos.x), interval) == 0
         && mod(floor(pos.y), interval) == 0;
 }
+vec2 AddToAvgIfValid(float x, vec2 s)
+{
+    if (x != -1)
+        return vec2(s.x + x, s.y + 1);
+    return s;
+}
+
+float AddToSumIfValid(float x, float avg)
+{
+    if (x != -1)
+        return pow(x - avg, 2);
+    return 0;
+}
+
+float stdDev(float a, float b, float c, float d)
+{
+    vec2 sumAmount = AddToAvgIfValid(a, vec2(0));
+    sumAmount += AddToAvgIfValid(b, sumAmount);
+    sumAmount += AddToAvgIfValid(c, sumAmount);
+    sumAmount += AddToAvgIfValid(d, sumAmount);
+
+    float amount = sumAmount.y;
+    float avg = sumAmount.x / amount;
+
+    float sum = AddToSumIfValid(a, avg);
+    sum += AddToSumIfValid(b, avg);
+    sum += AddToSumIfValid(c, avg);
+    sum += AddToSumIfValid(d, avg);
+
+    return 0.0;
+}
+
+bool DiffOk(float a, float b, float c, float d)
+{
+    return stdDev(a, b, c, d) < maxPixelDifference;
+}
+
+bool CornerDiffsOk(vec4 tr, vec4 tl, vec4 br, vec4 bl)
+{
+    return DiffOk(tr.r, tl.r, br.r, bl.r)
+        && DiffOk(tr.g, tl.g, tl.g, bl.g)
+        && DiffOk(tr.b, tl.b, tl.b, bl.b)
+        && DiffOk(tr.a, tl.a, tl.a, bl.a);
+}
+
+bool PixelDifferenceStdDevOk(vec2 tr, vec2 tl, vec2 br, vec2 bl)
+{
+    // colors
+    vec4 trc, tlc, brc, blc;
+    // validities
+    bool trd, tld, brd, bld;
+    trd = IsDone(tr);
+    tld = IsDone(tl);
+    brd = IsDone(br);
+    bld = IsDone(bl);
+    if (trd)
+    {
+        trc = texture(tempTexture, tr);
+    } else trc = vec4(-1);
+    if (tld)
+    {
+        tlc = texture(tempTexture, tl);
+    } else tlc = vec4(-1);
+    if (brd)
+    {
+        brc = texture(tempTexture, br);
+    } else brc = vec4(-1);
+    if (bld)
+    {
+        blc = texture(tempTexture, bl);
+    } else blc = vec4(-1);
+ 
+    return CornerDiffsOk(trc, tlc, brc, blc);
+}
+
+vec4 pixelDifference(vec2 tr, vec2 tl, vec2 br, vec2 bl)
+{
+     // colors
+    vec4 trc, tlc, brc, blc;
+    // validities
+    bool trd, tld, brd, bld;
+    trd = IsDone(tr);
+    tld = IsDone(tl);
+    brd = IsDone(br);
+    bld = IsDone(bl);
+    if (trd)
+    {
+        trc = texture(tempTexture, tr);
+    } else trc = vec4(-1);
+    if (tld)
+    {
+        tlc = texture(tempTexture, tl);
+    } else tlc = vec4(-1);
+    if (brd)
+    {
+        brc = texture(tempTexture, br);
+    } else brc = vec4(-1);
+    if (bld)
+    {
+        blc = texture(tempTexture, bl);
+    } else blc = vec4(-1);
+ 
+    return vec4(
+        stdDev(trc.r, tlc.r, brc.r, blc.r)
+        , stdDev(trc.g, tlc.g, brc.g, blc.g)
+        , stdDev(trc.b, tlc.b, brc.b, blc.b)
+        , stdDev(trc.a, tlc.a, brc.a, blc.a)
+    );
+
+}
+bool LuminanceDiffOk(float luminance, bool valid)
+{
+    return valid && luminance < maxPixelDifference;
+}
+
+bool PixelDifferenceLuminanceOk(vec2 tr, vec2 tl, vec2 br, vec2 bl)
+{
+    vec4 luminance_weights = vec4(0.2126, 0.7152, 0.0722, 0.0);
+    // colors
+    vec4 trc, tlc, brc, blc;
+    // validities
+    bool trd, tld, brd, bld;
+    // luminances
+    float trl, tll, brl, bll;
+    trd = IsDone(tr);
+    tld = IsDone(tl);
+    brd = IsDone(br);
+    bld = IsDone(bl);
+    trc = texture(tempTexture, tr);
+    tlc = texture(tempTexture, tl);
+    brc = texture(tempTexture, br);
+    blc = texture(tempTexture, bl);
+    trl = dot(trc, luminance_weights);
+    tll = dot(tlc, luminance_weights);
+    brl = dot(brc, luminance_weights);
+    bll = dot(blc, luminance_weights);
+
+    return LuminanceDiffOk(trl, trd)
+        && LuminanceDiffOk(tll, tld)
+        && LuminanceDiffOk(brl, brd)
+        && LuminanceDiffOk(bll, bld);
+}
 
 vec4 Interpolate(vec2 left, vec2 right, float t)
 {
@@ -188,7 +341,7 @@ vec4 Interpolate(vec2 left, vec2 right, float t)
     return col;
 }
 
-void InterpolateColor(ivec2 storePos, vec2 uv, vec4 size)
+void InterpolateColor(ivec2 storePos, vec2 uv, vec4 size, RaycastRequirements raycastInfo)
 {
     // find where to sample neighboring pixels
     vec2 pos = uv * size.zw;
@@ -210,7 +363,11 @@ void InterpolateColor(ivec2 storePos, vec2 uv, vec4 size)
                         size.y * yrem);
 
     // check coherence and raycast if not good enough
-    // TODO
+    if (!PixelDifferenceLuminanceOk(tr, tl, br, bl))
+    {
+        EvalPixel(raycastInfo, storePos);
+        return;
+    }
 
     // manually Interpolate
     float xa = xrem / interval;
@@ -272,17 +429,21 @@ void main ()
     // If inside volume grid
     if(inbox)
     {
+      RaycastRequirements raycastInfo;
+      raycastInfo.tnear = tnear;
+      raycastInfo.tfar = tfar;
+      raycastInfo.r = r;
       int evaluation_mode = EvaluationMode(storePos);
       if (evaluation_mode == RAYCAST)
       {
-        EvalPixel(tnear, tfar, r, storePos);
+        EvalPixel(raycastInfo, storePos);
       }
       else if (evaluation_mode == INTERPOLATE)
       {
         vec4 size = vec4(1.0/size, size);
-        InterpolateColor(storePos, VerPos.xy/2 + 0.5, size);
+        InterpolateColor(storePos, VerPos.xy/2 + 0.5, size, raycastInfo);
       }
-      else {
+      else if (!IsFirstPass) {
         vec4 samp = texture(tempTexture, VerPos.xy/2 + 0.5);
         imageStore(OutputFrag, storePos, samp);
       }

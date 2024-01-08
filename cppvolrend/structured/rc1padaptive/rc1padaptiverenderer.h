@@ -40,6 +40,7 @@ private:
   bool m_do_interpolation;
   bool m_debug_temp_texture;
   int m_interval;
+  float m_max_pixel_difference;
   gl::Texture2D *m_temp_texture;
 };
 
