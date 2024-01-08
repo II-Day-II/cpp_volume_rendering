@@ -41,8 +41,10 @@ layout (local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 layout (rgba16f, binding = 0) uniform image2D OutputFrag;
 
 // adaptive variables
+uniform bool DoInterpolation;
 uniform sampler2D tempTexture;
 uniform bool IsFirstPass;
+uniform int interval;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // From structured/_common_shaders/ray_bbox_intersection.comp
@@ -92,30 +94,8 @@ vec3 ShadeBlinnPhong (vec3 Tpos, vec3 clr)
   return clr;
 }
 
-
-void main ()
+void EvalPixel(float tnear, float tfar, Ray r, ivec2 storePos)
 {
-  ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
-  
-  ivec2 size = imageSize(OutputFrag);
-  if (storePos.x < size.x && storePos.y < size.y)
-  {
-    // Get screen position [x, y] and consider centering the pixel by + 0.5
-    vec2 fpos = vec2(storePos) + 0.5;
-
-    // Transform fpos from [w, h] to [0, 1] to [-1, 1]
-    vec3 VerPos = (vec3(fpos.x / float(size.x), fpos.y / float(size.y), 0.0) * 2.0) - 1.0;
-
-    // Camera direction
-    vec3 camera_dir = normalize(vec3(VerPos.x * u_TanCameraFovY * u_CameraAspectRatio, VerPos.y * u_TanCameraFovY, -1.0) * mat3(u_CameraLookAt));
-
-    // Find Ray Intersection
-    Ray r; float tnear, tfar;
-    bool inbox = RayAABBIntersection(CameraEye, camera_dir, VolumeGridSize, r, tnear, tfar);
-
-    // If inside volume grid
-    if(inbox)
-    {
       // Distance to be evaluated
       float D = abs(tfar - tnear);
 
@@ -170,6 +150,142 @@ void main ()
         s = s + h;
       }
       imageStore(OutputFrag, storePos, dst);
+}
+
+bool IsDone(vec2 pos)
+{
+    vec2 size = imageSize(OutputFrag);
+    return 
+        // in bounds
+        pos.x >= 0
+        && pos.x < size.x
+        && pos.y >= 0 
+        && pos.y < size.y
+        // on grid
+        && mod(floor(pos.x), interval) == 0
+        && mod(floor(pos.y), interval) == 0;
+}
+
+vec4 Interpolate(vec2 left, vec2 right, float t)
+{
+    vec4 col = vec4(0);
+    bool leftExists = IsDone(left);
+    bool rightExists = IsDone(right);
+    if (leftExists)
+    {
+        col = texture(tempTexture, left);
+        if (rightExists)
+        {
+            col *= t;
+            col += texture(tempTexture, right) * (1 - t);
+        }
+        return col;
+    }
+    if (rightExists)
+    {
+        col = texture(tempTexture, right);
+    }
+    return col;
+}
+
+void InterpolateColor(ivec2 storePos, vec2 uv, vec4 size)
+{
+    // find where to sample neighboring pixels
+    vec2 pos = uv * size.zw;
+    float xrem = mod(floor(pos.x), interval);//storePos.x % interval;
+    float yrem = mod(floor(pos.y), interval);//storePos.y % interval;
+
+
+    // top right
+    vec2 tr = uv + vec2(size.x * (interval - xrem),
+                        size.y * (interval - yrem));
+    // top left
+    vec2 tl = uv + vec2(-size.x * xrem,
+                        size.y * (interval - yrem));
+    // bot right
+    vec2 br = uv + vec2(size.x * (interval - xrem),
+                        -size.y * yrem);
+    // bot left
+    vec2 bl = uv - vec2(size.x * xrem, 
+                        size.y * yrem);
+
+    // check coherence and raycast if not good enough
+    // TODO
+
+    // manually Interpolate
+    float xa = xrem / interval;
+    float ya = yrem / interval;
+   
+    vec4 bot = Interpolate(br, bl, xa);
+    vec4 top = Interpolate(tr, tl, xa);
+
+    vec4 col = mix(bot, top, ya);
+    imageStore(OutputFrag, storePos, col);
+}
+
+#define RAYCAST 0
+#define INTERPOLATE 1
+#define SKIP 2
+int EvaluationMode(ivec2 storePos)
+{
+    // always raycast if interpolation is turned off. 
+    if (!DoInterpolation)
+    {
+        return RAYCAST;
+    }
+    // is this pixel on of the n:th that should be raycast?
+    bool onGrid = storePos.x % interval == 0 && storePos.y % interval == 0;
+    // raycast if it's the first pass and it should be raycast
+    if (onGrid && IsFirstPass)
+    {
+        return RAYCAST;
+    }
+    // if we're not on grid in the second pass, interpolate
+    if (!onGrid && !IsFirstPass)
+    {
+        return INTERPOLATE;
+    }
+    // if we're going to interpolate in the next pass or have already raycast this pixel, don't do anything with it now
+    return SKIP;
+}
+
+void main ()
+{
+  ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+  
+  ivec2 size = imageSize(OutputFrag);
+  if (storePos.x < size.x && storePos.y < size.y)
+  {
+    // Get screen position [x, y] and consider centering the pixel by + 0.5
+    vec2 fpos = vec2(storePos) + 0.5;
+
+    // Transform fpos from [w, h] to [0, 1] to [-1, 1]
+    vec3 VerPos = (vec3(fpos.x / float(size.x), fpos.y / float(size.y), 0.0) * 2.0) - 1.0;
+
+    // Camera direction
+    vec3 camera_dir = normalize(vec3(VerPos.x * u_TanCameraFovY * u_CameraAspectRatio, VerPos.y * u_TanCameraFovY, -1.0) * mat3(u_CameraLookAt));
+
+    // Find Ray Intersection
+    Ray r; float tnear, tfar;
+    bool inbox = RayAABBIntersection(CameraEye, camera_dir, VolumeGridSize, r, tnear, tfar);
+
+    // If inside volume grid
+    if(inbox)
+    {
+      int evaluation_mode = EvaluationMode(storePos);
+      if (evaluation_mode == RAYCAST)
+      {
+        EvalPixel(tnear, tfar, r, storePos);
+      }
+      else if (evaluation_mode == INTERPOLATE)
+      {
+        vec4 size = vec4(1.0/size, size);
+        InterpolateColor(storePos, VerPos.xy/2 + 0.5, size);
+      }
+      else {
+        vec4 samp = texture(tempTexture, VerPos.xy/2 + 0.5);
+        imageStore(OutputFrag, storePos, samp);
+      }
     }
   }
 }

@@ -17,7 +17,9 @@ RayCastingAdaptiveIso::RayCastingAdaptiveIso()
     , m_u_color(0.66f, 0.6f, 0.05f, 1.0f)
     , m_apply_gradient_shading(false)
     , m_do_interpolation(false)
+    , m_interval(1)
     , m_temp_texture(nullptr) // bruh
+    , m_debug_temp_texture(false)
 {
 }
 
@@ -51,6 +53,9 @@ void RayCastingAdaptiveIso::Clean()
   cp_shader_rendering = nullptr;
 
   gl::ExitOnGLError("Could not destroy shaders");
+
+  if (m_temp_texture) delete m_temp_texture;
+  m_temp_texture = nullptr;
 
   BaseVolumeRenderer::Clean();
 }
@@ -190,13 +195,16 @@ bool RayCastingAdaptiveIso::Update(vis::Camera* camera)
   /////////////////////////////
   // Isosurface aspects
   cp_shader_rendering->SetUniform("Isovalue", m_u_isovalue);
-  // NEW ------
   cp_shader_rendering->SetUniform("StepSize", m_u_step_size);
   //cp_shader_rendering->BindUniform("StepSize");
-
   cp_shader_rendering->SetUniform("Color", m_u_color);
   //cp_shader_rendering->BindUniform("Color");
-  // END NEW ----
+
+  /////////////////////////////
+  // Adaptive settings
+  cp_shader_rendering->SetUniform("DoInterpolation", m_do_interpolation);
+  cp_shader_rendering->SetUniform("interval", m_interval);
+
 
   cp_shader_rendering->SetUniform("ApplyGradientPhongShading", (m_apply_gradient_shading && m_ext_data_manager->GetCurrentGradientTexture()) ? 1 : 0);
   cp_shader_rendering->BindUniform("ApplyGradientPhongShading");
@@ -230,9 +238,11 @@ void RayCastingAdaptiveIso::Redraw()
     if (m_do_interpolation)
     {
         // FIRST PASS
-        cp_shader_rendering->Bind();
+        // clear the temp texture
+        glClearTexImage(m_temp_texture->GetTextureID(), 0, GL_RGBA, GL_FLOAT, 0);
 
-        cp_shader_rendering->SetUniform("IsFirstPass", 1);
+        cp_shader_rendering->Bind();
+        cp_shader_rendering->SetUniform("IsFirstPass", true);
         cp_shader_rendering->BindUniform("IsFirstPass"); // idk if this actually does anything
 
         // bind the temp texture as output ( this is what rdr_frame_to_screen.BindImageTexture does )
@@ -243,27 +253,35 @@ void RayCastingAdaptiveIso::Redraw()
         // render to the temp texture
         cp_shader_rendering->Dispatch();
         gl::ComputeShader::Unbind();
+
         // END FIRST PASS
 
-        // SECOND PASS
-        m_rdr_frame_to_screen.ClearTexture();
-        cp_shader_rendering->Bind();
-        m_rdr_frame_to_screen.BindImageTexture();
+        if (m_debug_temp_texture)
+        {
+            m_rdr_frame_to_screen.Draw(m_temp_texture);
+        } 
+        else
+        {
+            // SECOND PASS
+            m_rdr_frame_to_screen.ClearTexture();
+            cp_shader_rendering->Bind();
+            m_rdr_frame_to_screen.BindImageTexture();
 
-        cp_shader_rendering->SetUniform("IsFirstPass", 0);
-        cp_shader_rendering->BindUniform("IsFirstPass");
+            cp_shader_rendering->SetUniform("IsFirstPass", false);
+            cp_shader_rendering->BindUniform("IsFirstPass");
 
 
-        cp_shader_rendering->SetUniform("tempTexture", 3); // wtf
-        cp_shader_rendering->BindUniform("tempTexture");
-        glActiveTexture(GL_TEXTURE3); // aaaaaah
-        glBindTexture(GL_TEXTURE_2D, m_temp_texture->GetTextureID()); // this feels wrong. Very wrong.
+            cp_shader_rendering->SetUniform("tempTexture", 3); // wtf
+            cp_shader_rendering->BindUniform("tempTexture");
+            glActiveTexture(GL_TEXTURE3); // aaaaaah
+            glBindTexture(GL_TEXTURE_2D, m_temp_texture->GetTextureID()); // this feels wrong. Very wrong.
 
 
-        cp_shader_rendering->Dispatch();
-        gl::ComputeShader::Unbind();
+            cp_shader_rendering->Dispatch();
+            gl::ComputeShader::Unbind();
 
-        m_rdr_frame_to_screen.Draw();
+            m_rdr_frame_to_screen.Draw();
+        }
         // END SECOND PASS
     }
     else 
@@ -272,7 +290,7 @@ void RayCastingAdaptiveIso::Redraw()
   
         cp_shader_rendering->Bind();
         m_rdr_frame_to_screen.BindImageTexture();
-
+  
         cp_shader_rendering->Dispatch();
         gl::ComputeShader::Unbind();
  
@@ -309,6 +327,19 @@ void RayCastingAdaptiveIso::SetImGuiComponents()
   ImGui::Text("Do interpolation: ");
   if (ImGui::Checkbox("###RayCastingAdaptiveIsoUIDoInterpolation", &m_do_interpolation))
   {
+      SetOutdated();
+  }
+  
+  ImGui::Text("Debug temp texture");
+  if (ImGui::Checkbox("###RayCastingAdaptiveIsoUIDebug", &m_debug_temp_texture))
+  {
+      SetOutdated();
+  }
+
+  ImGui::Text("Raycasting pixel Interval: ");
+  if (ImGui::DragInt("###RayCastingAdaptiveIsoUIPixelInterval", &m_interval, 1, 1, 16)) // is there a PowerSlider?
+  {
+      m_interval = std::max(std::min(m_interval, 16), 1);
       SetOutdated();
   }
   

@@ -38,6 +38,8 @@ protected:
 private:
   gl::ComputeShader* cp_shader_rendering;
   bool m_do_interpolation;
+  bool m_debug_temp_texture;
+  int m_interval;
   gl::Texture2D *m_temp_texture;
 };
 
