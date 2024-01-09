@@ -39,6 +39,8 @@ private:
   gl::ComputeShader* cp_shader_rendering;
   bool m_do_interpolation;
   bool m_debug_temp_texture;
+  bool m_visualize_pixel_diff;
+  bool m_use_luminance_diff;
   int m_interval;
   float m_max_pixel_difference;
   gl::Texture2D *m_temp_texture;

@@ -21,6 +21,8 @@ RayCastingAdaptiveIso::RayCastingAdaptiveIso()
     , m_temp_texture(nullptr) // bruh
     , m_debug_temp_texture(false)
     , m_max_pixel_difference(0.0f)
+    , m_visualize_pixel_diff(false)
+    , m_use_luminance_diff(false)
 {
 }
 
@@ -206,6 +208,8 @@ bool RayCastingAdaptiveIso::Update(vis::Camera* camera)
   cp_shader_rendering->SetUniform("DoInterpolation", m_do_interpolation);
   cp_shader_rendering->SetUniform("interval", m_interval);
   cp_shader_rendering->SetUniform("maxPixelDifference", m_max_pixel_difference);
+  cp_shader_rendering->SetUniform("visualize_pixel_difference", m_visualize_pixel_diff);
+  cp_shader_rendering->SetUniform("use_luminance_difference", m_use_luminance_diff);
 
   cp_shader_rendering->SetUniform("ApplyGradientPhongShading", (m_apply_gradient_shading && m_ext_data_manager->GetCurrentGradientTexture()) ? 1 : 0);
   cp_shader_rendering->BindUniform("ApplyGradientPhongShading");
@@ -303,8 +307,10 @@ void RayCastingAdaptiveIso::Redraw()
 void RayCastingAdaptiveIso::FillParameterSpace(ParameterSpace& pspace) 
 {
     pspace.ClearParameterDimensions();
-    pspace.AddParameterDimension(new ParameterRangeFloat("StepSize", &m_u_step_size, 0.05f, 3.0f, 0.1f));
-    // add more parameters to evaluate
+        // add more parameters to evaluate
+    pspace.AddParameterDimension(new ParameterRangeFloat("Max Pixel Difference", &m_max_pixel_difference, 0.0f, 0.6f, 0.05f));
+    pspace.AddParameterDimension(new ParameterRangeInt("Raycast interval", &m_interval, 1, 8, 1));
+    pspace.AddParameterDimension(new ParameterRangeBool("Use luminance pixel difference", &m_use_luminance_diff));
 }
 
 void RayCastingAdaptiveIso::SetImGuiComponents()
@@ -339,6 +345,18 @@ void RayCastingAdaptiveIso::SetImGuiComponents()
       SetOutdated();
   }
 
+  ImGui::Text("Visualize pixel difference");
+  if (ImGui::Checkbox("###RayCastingAdaptiveIsoUIVisPixelDiff", &m_visualize_pixel_diff))
+  {
+      SetOutdated();
+  }
+
+  ImGui::Text("Use luminance for pixel difference");
+  if (ImGui::Checkbox("###RayCastingAdaptiveIsoUIUseLuminance", &m_use_luminance_diff))
+  {
+      SetOutdated();
+  }
+
   ImGui::Text("Raycasting pixel Interval: ");
   if (ImGui::DragInt("###RayCastingAdaptiveIsoUIPixelInterval", &m_interval, 1, 1, 16)) // is there a PowerSlider?
   {
@@ -347,9 +365,9 @@ void RayCastingAdaptiveIso::SetImGuiComponents()
   }
 
   ImGui::Text("Maximum pixel difference: ");
-  if (ImGui::DragFloat("###RayCastingAdaptiveIsoUIMaxPixelDiff", &m_max_pixel_difference, 0.01f, 0.0f, 0.75f, "%.2f"))
+  if (ImGui::DragFloat("###RayCastingAdaptiveIsoUIMaxPixelDiff", &m_max_pixel_difference, 0.01f, 0.0f, 0.6f, "%.2f"))
   {
-      m_max_pixel_difference = std::max(std::min(m_max_pixel_difference, 0.75f), 0.0f);
+      m_max_pixel_difference = std::max(std::min(m_max_pixel_difference, 0.6f), 0.0f);
       SetOutdated();
   }
 
